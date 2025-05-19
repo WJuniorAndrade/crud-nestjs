@@ -12,3 +12,42 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+
+enum status {
+  PENDENTE
+  INICIADA
+  CONCLUIDA
+  CANCELADA
+  AGUARDANDO
+  AGENDADA
+}
+
+enum priority {
+  ALTA
+  MEDIA
+  BAIXA
+  NORMAL
+}
+
+model tasks {
+  id_task        String         @id @default(uuid())
+  id_category    String?        
+  created_at     DateTime       @default(now())
+  updated_at     DateTime       @updatedAt
+  title          String         @db.VarChar(60)
+  description    String?        @db.VarChar(100)
+  category       category?      @relation(fields: [id_category], references: [id_category])
+  status         status?         @default(PENDENTE)
+  priority       priority?       @default(NORMAL)
+  start_dt       DateTime?
+  end_dt         DateTime?
+}
+
+model category {
+  id_category    String           @id @default(uuid())
+  name           String           @unique @db.VarChar(40)
+  task           tasks[]
+  created_at     DateTime         @default(now())
+  updated_at     DateTime         @updatedAt
+}
