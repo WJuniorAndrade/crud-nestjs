@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:latest
+    container_name: crud-nestjs
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_DB: crud-nestjs
+      POSTGRES_USER: dev-team
+      POSTGRES_PASSWORD: 12345678
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+volumes:
+  postgres_data:
